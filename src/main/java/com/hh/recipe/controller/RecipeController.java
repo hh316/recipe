@@ -1,10 +1,9 @@
 package com.hh.recipe.controller;
 
-import com.hh.recipe.domain.dto.RecipeDto;
+import com.hh.recipe.domain.dto.CreateRecipeDto;
 import com.hh.recipe.service.RecipeService;
 import com.hh.recipe.utils.Result;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,11 +16,22 @@ public class RecipeController {
 
     //创建菜谱
     @PostMapping()
-    public Result createRecipe(@RequestBody RecipeDto recipeDto, @RequestHeader String token) {
-        Result result = recipeService.create(recipeDto, token);
+    public Result createRecipe(@RequestBody CreateRecipeDto recipeDto, @RequestHeader String token) {
+        Result result = recipeService.create(recipeDto);
         return result;
     }
 
+    // 查看收藏的菜谱
+    @GetMapping()
+    public Result readRecipe() {
+        Result result = recipeService.readRecipe();
+        return result;
+    }
 
-    // 其他方法...
+    // 根据菜谱id查询菜谱信息
+    @GetMapping("detail")
+    public Result recipeDetail(@RequestParam int recipeId) {
+        Result result = recipeService.recipeDetail(recipeId);
+        return result;
+    }
 }

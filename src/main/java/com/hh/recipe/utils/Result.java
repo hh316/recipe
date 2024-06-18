@@ -68,7 +68,7 @@ public class Result<T> {
         Result<T> result = build(data);
         return build(data, ResultCodeEnum.SUCCESS);
     }
-
+   //赋值并返回信息和响应码
     public Result<T> message(String msg) {
         this.setMessage(msg);
         return this;

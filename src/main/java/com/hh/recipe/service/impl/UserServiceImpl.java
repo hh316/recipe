@@ -14,9 +14,8 @@ import com.hh.recipe.utils.Result;
 import com.hh.recipe.utils.ResultCodeEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
-
+//用户业务层
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
@@ -65,6 +64,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         //保存用户
         userMapper.insert(user);
         return Result.ok(null);
-
     }
+
+    /**
+     * @param token
+     * @return
+     */
+    @Override
+    public Integer getUserInfo(String token) {
+        //判断token是否有效
+        boolean expiration = jwtHelper.isExpiration(token);
+        if (expiration) {
+            //未登录
+            return 504;
+        }
+        //根据id获取数据
+        int userId = jwtHelper.getUserId(token).intValue();
+
+        return userId;
+    }
+
+    //通过请求头token获得user_id
+
+
 }

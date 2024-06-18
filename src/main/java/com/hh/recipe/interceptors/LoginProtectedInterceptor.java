@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hh.recipe.utils.JwtHelper;
 import com.hh.recipe.utils.Result;
 import com.hh.recipe.utils.ResultCodeEnum;
+import com.hh.recipe.utils.TokenContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -20,6 +21,8 @@ public class LoginProtectedInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("token");
+        //把token存放到线程池中
+        TokenContextHolder.setToken(token);
         boolean expiration = jwtHelper.isExpiration(token);
         if (!expiration) {
             return true;

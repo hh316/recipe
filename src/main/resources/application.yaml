@@ -16,5 +16,5 @@ mybatis-plus:
   type-aliases-package: com.hh.recipe.domain  # 设置别名扫描的包路径
 jwt:
   token:
-    tokenExpiration: 120 #有效时间,单位分钟
+    tokenExpiration: 1200000 #有效时间,单位分钟
     tokenSignKey: recipeHh1105   #用于生成token签名的密钥

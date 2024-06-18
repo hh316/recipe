@@ -2,19 +2,24 @@ package com.hh.recipe.service.impl;
 
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hh.recipe.domain.dto.RecipeDto;
+import com.hh.recipe.domain.dto.CreateRecipeDto;
 import com.hh.recipe.domain.po.*;
+import com.hh.recipe.domain.vo.FavoritesRecipeVo;
+import com.hh.recipe.domain.vo.RecipeDetailVo;
 import com.hh.recipe.mapper.*;
 import com.hh.recipe.service.RecipeService;
 import com.hh.recipe.utils.JwtHelper;
 import com.hh.recipe.utils.Result;
+import com.hh.recipe.utils.TokenContextHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+//菜谱业务层
 @Service
 @RequiredArgsConstructor
 public class RecipeServiceImpl extends ServiceImpl<RecipeMapper, Recipe> implements RecipeService {
@@ -33,7 +38,7 @@ public class RecipeServiceImpl extends ServiceImpl<RecipeMapper, Recipe> impleme
 
     //创建菜谱
     @Override
-    public Result create(RecipeDto recipeDto, String token) {
+    public Result create(CreateRecipeDto recipeDto) {
         //根据前端传来的菜谱dto实体分别创建菜谱，食材，配料，步骤，分类
         //1.添加菜谱
         Recipe recipe = new Recipe();
@@ -43,9 +48,11 @@ public class RecipeServiceImpl extends ServiceImpl<RecipeMapper, Recipe> impleme
         Date date = new Date();
         recipe.setCreateTime(new Timestamp(date.getTime()));
         recipe.setRecipeExperience(recipeDto.getRecipeExperience());
-        //TODO-完善登录功能后，从token中获得创建者id
-        System.out.println("从token中获取的recipe_id:" + jwtHelper.getUserId(token));
-        recipe.setCreatorId(jwtHelper.getUserId(token));
+        //-完善登录功能后，从token中获得创建者id
+//        System.out.println("从token中获取的recipe_id:" + jwtHelper.getUserId(token));
+        System.out.println("从线程池中获得token:" + TokenContextHolder.getToken());
+//        recipe.setCreatorId(jwtHelper.getUserId(token));
+        recipe.setCreatorId(jwtHelper.getUserId(TokenContextHolder.getToken()));
         //mybatis-plus单表的添加
         recipeMapper.insert(recipe);
         Integer recipeId = recipe.getRecipeId();
@@ -93,4 +100,27 @@ public class RecipeServiceImpl extends ServiceImpl<RecipeMapper, Recipe> impleme
         categoryMapper.insertCategoryBatch(categoryList);
         return Result.ok(null);
     }
+
+    /**
+     * 查看收藏的菜谱
+     */
+    @Override
+    public Result readRecipe() {
+        Integer userId = jwtHelper.getUserId(TokenContextHolder.getToken());
+        ArrayList<FavoritesRecipeVo> favoritesRecipeVoArrayList = new ArrayList<>();
+        favoritesRecipeVoArrayList = recipeMapper.readRecipe(userId);
+        System.out.println("收藏的菜谱:" + favoritesRecipeVoArrayList);
+        return Result.ok(favoritesRecipeVoArrayList);
+    }
+
+    /**
+     * @param recipeId 根据菜谱id显示菜谱详细信息
+     */
+    @Override
+    public Result recipeDetail(int recipeId) {
+        RecipeDetailVo recipeDetailVo = recipeMapper.recipeDetail(recipeId);
+        return Result.ok(recipeDetailVo);
+    }
+
+
 }

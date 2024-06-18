@@ -10,4 +10,6 @@ public interface UserService extends IService<User> {
     Result login(LoginDto loginDto);
 
     Result register(User user);
+
+    Integer getUserInfo(String token);
 }

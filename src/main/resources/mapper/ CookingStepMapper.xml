@@ -9,4 +9,11 @@
             (#{cookingStep.recipeId},#{cookingStep.stepOrder},#{cookingStep.stepDescription},#{cookingStep.stepImageUrl})
         </foreach>
     </insert>
+    <select id="selectCookingStepByRecipeId" resultType="com.hh.recipe.domain.vo.CookingStepVo">
+        SELECT cooking_step.step_order,
+               cooking_step.step_description,
+               cooking_step.step_image_url
+        FROM cooking_step
+        WHERE cooking_step.recipe_id = #{recipe_id};
+    </select>
 </mapper>

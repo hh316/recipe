@@ -10,4 +10,10 @@
             (#{ingredient.ingredientName},#{ingredient.ingredientQuantity},#{ingredient.recipeId})
         </foreach>
     </insert>
+    <select id="selectIngredientsByRecipeId" resultType="com.hh.recipe.domain.vo.IngredientsVo">
+        SELECT Ingredients.ingredient_name,
+               Ingredients.ingredient_quantity
+        FROM Ingredients
+        WHERE Ingredients.recipe_id = #{recipeId};
+    </select>
 </mapper>

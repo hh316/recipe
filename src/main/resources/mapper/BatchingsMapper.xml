@@ -8,4 +8,11 @@
             (#{batching.batchingName},#{batching.batchingQuantity},#{batching.recipeId})
         </foreach>
     </insert>
+    <!--    查询菜谱的配料-->
+    <select id="selectBatchingsByRecipeI" resultType="com.hh.recipe.domain.vo.BatchingsVo">
+        SELECT Batchings.Batching_name,
+               Batchings.Batching_quantity
+        FROM Batchings
+        WHERE Batchings.recipe_id = #{recipeId};
+    </select>
 </mapper>

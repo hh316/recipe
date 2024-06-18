@@ -12,7 +12,7 @@ import java.util.List;
 
 @Data
 @ApiModel(description = "菜谱DTO实体")
-public class RecipeDto {
+public class CreateRecipeDto {
 //    @ApiModelProperty("菜谱ID")
 //    private Integer recipeId;
 

@@ -6,10 +6,7 @@ import com.hh.recipe.service.UserService;
 import com.hh.recipe.utils.Result;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 //ctrl+alt+L自动代码整理
 @RestController
@@ -31,5 +28,12 @@ public class UserController {
     private Result register(@RequestBody User user) {
         Result result = userService.register(user);
         return result;
+    }
+
+    //登录后根据请求头token获取用户信息
+    @GetMapping("getUserInfo")
+    private Integer getUserInfo(@RequestHeader String token) {
+        Integer userId = userService.getUserInfo(token);
+        return userId;
     }
 }
