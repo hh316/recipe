@@ -17,8 +17,8 @@ public class RecipeController {
 
     //创建菜谱
     @PostMapping()
-    public Result createRecipe(@RequestBody RecipeDto recipeDto) {
-        Result result = recipeService.create(recipeDto);
+    public Result createRecipe(@RequestBody RecipeDto recipeDto, @RequestHeader String token) {
+        Result result = recipeService.create(recipeDto, token);
         return result;
     }
 

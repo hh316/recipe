@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface RecipeService extends IService<Recipe> {
-    Result create(RecipeDto recipeDto);
+    Result create(RecipeDto recipeDto, String token);
     //创建菜谱
 
 
