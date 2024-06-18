@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.recipe.mapper.IngredientsMapper">
+    <!-- 批量添加食材-->
+    <insert id="insertIngredientsBatch">
+        insert into ingredients(ingredient_name,ingredient_quantity,recipe_id) values
+        <foreach collection="ingredients" item="ingredient" separator=",">
+            (#{ingredient.ingredientName},#{ingredient.ingredientQuantity},#{ingredient.recipeId})
+        </foreach>
+    </insert>
+</mapper>
