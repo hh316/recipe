@@ -16,4 +16,8 @@ public interface UserService extends IService<User> {
     Result findAllfans();
 
     Result findAllFollower();
+
+    Result likeRecipe(int recipeId);
+
+    Result favoritesRecipe(int recipeId);
 }

@@ -5,15 +5,20 @@ import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hh.recipe.domain.dto.LoginDto;
+import com.hh.recipe.domain.po.RecipeFavorites;
+import com.hh.recipe.domain.po.RecipeLikes;
 import com.hh.recipe.domain.po.User;
 import com.hh.recipe.domain.vo.UserVo;
 import com.hh.recipe.mapper.UserMapper;
 import com.hh.recipe.service.UserService;
 import com.hh.recipe.utils.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 //用户业务层
@@ -113,6 +118,40 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         ArrayList<UserVo> userVoArrayList = new ArrayList<>();
         userVoArrayList = userMapper.findAllFollower(userId);
         return Result.ok(userVoArrayList);
+    }
+
+    /**
+     * @param recipeId
+     * @return 点餐菜谱
+     */
+    @Override
+    public Result likeRecipe(int recipeId) {
+        Integer userId = jwtHelper.getUserId(TokenContextHolder.getToken());
+        System.out.println("用户id:" + userId);
+        RecipeLikes recipeLike = new RecipeLikes();
+        recipeLike.setRecipeId(recipeId);
+        Date date = new Date();
+        recipeLike.setLikeDate(new Timestamp(date.getTime()));
+        recipeLike.setUserId(userId);
+        int i = userMapper.likeRecipe(recipeLike);
+        return Result.ok("i");
+    }
+
+    /**
+     * @param recipeId
+     * @return 收藏菜谱
+     */
+    @Override
+    public Result favoritesRecipe(int recipeId) {
+        Integer userId = jwtHelper.getUserId(TokenContextHolder.getToken());
+        System.out.println("用户id:" + userId);
+        RecipeFavorites recipeFavorite = new RecipeFavorites();
+        recipeFavorite.setRecipeId(recipeId);
+        Date date = new Date();
+        recipeFavorite.setFavoriteDate(new Timestamp(date.getTime()));
+        recipeFavorite.setUserId(userId);
+        int i = userMapper.favoritesRecipe(recipeFavorite);
+        return Result.ok("i");
     }
 
     //通过请求头token获得user_id

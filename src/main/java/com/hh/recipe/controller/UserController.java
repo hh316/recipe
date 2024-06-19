@@ -50,4 +50,18 @@ public class UserController {
         Result result = userService.findAllFollower();
         return result;
     }
+
+    //点赞菜谱
+    @PostMapping("likeRecipe")
+    private Result likeRecipe(@RequestParam int recipeId) {
+        Result result = userService.likeRecipe(recipeId);
+        return result;
+    }
+
+    //收藏菜谱
+    @PostMapping("favoritesRecipe")
+    private Result favoritesRecipe(@RequestParam int recipeId) {
+        Result result = userService.favoritesRecipe(recipeId);
+        return result;
+    }
 }
