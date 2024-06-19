@@ -2,6 +2,7 @@ package com.hh.recipe.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hh.recipe.domain.dto.UserDto;
 import com.hh.recipe.domain.po.RecipeFavorites;
 import com.hh.recipe.domain.po.RecipeLikes;
 import com.hh.recipe.domain.po.User;
@@ -19,4 +20,5 @@ public interface UserMapper extends BaseMapper<User> {
     int favoritesRecipe(RecipeFavorites recipeFavorite);
 
 
+    void insert(UserDto userDto);
 }

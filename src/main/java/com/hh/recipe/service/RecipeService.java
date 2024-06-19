@@ -24,4 +24,12 @@ public interface RecipeService extends IService<Recipe> {
     Result recipeLikesByRecipeId();
 
     Result recipeFavoritesByRecipeId();
+
+    Result favoritesByRecipeId(int recipeId);
+
+    Result likesByRecipeId(int recipeId);
+
+    Result popularFavorites();
+
+    Result popularLikes();
 }

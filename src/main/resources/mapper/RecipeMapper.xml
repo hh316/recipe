@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hh.recipe.mapper.RecipeMapper">
 
-    <select id="recipeFavoritesByRecipeId" resultType="com.hh.recipe.domain.vo.FavoritesAndLikeRecipeVo">
+    <select id="recipeFavoritesByRecipeId" resultType="com.hh.recipe.domain.vo.ShowRecipeVo">
         SELECT Recipe.recipe_name, recipe.recipe_image, Recipe.recipe_id
         FROM Recipe_Favorites
                  JOIN Recipe ON Recipe_Favorites.recipe_id = Recipe.recipe_id
@@ -17,21 +17,17 @@
         FROM Recipe
         WHERE Recipe_id = #{recipe_id};
     </select>
-    <select id="recipeDetailByRecipeName" resultType="com.hh.recipe.domain.vo.RecipeDetailVo">
+    <select id="showRecipeByRecipeName" resultType="com.hh.recipe.domain.vo.ShowRecipeVo">
         SELECT Recipe.recipe_name,
                Recipe.recipe_image,
-               Recipe.recipe_description,
-               Recipe.create_time,
-               Recipe.recipe_experience
+               Recipe.recipe_id
         FROM Recipe
         WHERE Recipe.recipe_name LIKE CONCAT('%', #{recipeName}, '%');
     </select>
-    <select id="recipeDetailByIngredientName" resultType="com.hh.recipe.domain.vo.RecipeDetailVo">
+    <select id="showRecipeByIngredientName" resultType="com.hh.recipe.domain.vo.ShowRecipeVo">
         SELECT Recipe.recipe_name,
                Recipe.recipe_image,
-               Recipe.recipe_description,
-               Recipe.create_time,
-               Recipe.recipe_experience
+               Recipe.recipe_id
         FROM Ingredients
                  JOIN
              Recipe
@@ -39,12 +35,10 @@
                  Ingredients.recipe_id = Recipe.recipe_id
         WHERE Ingredients.ingredient_name like CONCAT('%', #{ingredientName}, '%');
     </select>
-    <select id="recipeDetailByCategoryName" resultType="com.hh.recipe.domain.vo.RecipeDetailVo">
+    <select id="showRecipeByCategoryName" resultType="com.hh.recipe.domain.vo.ShowRecipeVo">
         SELECT Recipe.recipe_name,
                Recipe.recipe_image,
-               Recipe.recipe_description,
-               Recipe.create_time,
-               Recipe.recipe_experience
+               Recipe.recipe_id
         FROM Category
                  JOIN
              Recipe
@@ -52,10 +46,36 @@
                  Category.recipe_id = Recipe.recipe_id
         WHERE Category.Category_name like CONCAT('%', #{categoryName}, '%');
     </select>
-    <select id="readrecipeLikesByRecipeIdRecipe" resultType="com.hh.recipe.domain.vo.FavoritesAndLikeRecipeVo">
+    <select id="readRecipeLikesByRecipeIdRecipe" resultType="com.hh.recipe.domain.vo.ShowRecipeVo">
         SELECT Recipe.recipe_name, recipe.recipe_image, Recipe.recipe_id
         FROM Recipe_likes
                  JOIN Recipe ON Recipe_likes.recipe_id = Recipe.recipe_id
         WHERE Recipe_likes.user_id = #{userId};
+    </select>
+    <select id="favoritesByRecipeId" resultType="java.lang.Integer">
+        SELECT COUNT(*) AS favorites_count
+        FROM Recipe_Favorites
+        WHERE recipe_id = #{recipeId}
+        GROUP BY recipe_id;
+    </select>
+    <select id="likesByRecipeId" resultType="java.lang.Integer">
+        SELECT COUNT(*) AS favorites_count
+        FROM Recipe_likes
+        WHERE recipe_id = #{recipeId}
+        GROUP BY recipe_id;
+    </select>
+    <select id="popularFavorites" resultType="com.hh.recipe.domain.vo.ShowRecipeVo">
+        SELECT r.recipe_id, r.recipe_name, r.recipe_image
+        FROM Recipe r
+        ORDER BY (SELECT COUNT(1)
+                  FROM Recipe_Favorites f
+                  WHERE f.recipe_id = r.recipe_id) DESC LIMIT 10;
+    </select>
+    <select id="popularLikes" resultType="com.hh.recipe.domain.vo.ShowRecipeVo">
+        SELECT r.recipe_id, r.recipe_name, r.recipe_image
+        FROM Recipe r
+        ORDER BY (SELECT COUNT(1)
+                  FROM Recipe_Likes f
+                  WHERE f.recipe_id = r.recipe_id) DESC LIMIT 10;
     </select>
 </mapper>

@@ -5,6 +5,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hh.recipe.domain.dto.LoginDto;
+import com.hh.recipe.domain.dto.UserDto;
 import com.hh.recipe.domain.po.RecipeFavorites;
 import com.hh.recipe.domain.po.RecipeLikes;
 import com.hh.recipe.domain.po.User;
@@ -53,22 +54,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
-     * @param user
+     * @param
      * @return
      */
     @Override
     //注册功能
-    public Result register(User user) {
+    public Result register(UserDto userDto) {
         LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        userLambdaQueryWrapper.eq(User::getUserName, user.getUserName());
+        userLambdaQueryWrapper.eq(User::getUserName, userDto.getUserName());
         Long count = Long.valueOf(userMapper.selectCount(userLambdaQueryWrapper));
         if (count > 0) {
             return Result.build(null, ResultCodeEnum.USERNAME_USED);
         }
         //给密码加密
-        user.setUserPassword(MD5Util.encrypt(user.getUserPassword()));
+        if (userDto.getUserPassword() == null) {
+            return Result.build(null, ResultCodeEnum.PASSWORD_ERROR);
+        }
+        userDto.setUserPassword(MD5Util.encrypt(userDto.getUserPassword()));
         //保存用户
-        userMapper.insert(user);
+        userMapper.insert(userDto);
         return Result.ok(null);
     }
 

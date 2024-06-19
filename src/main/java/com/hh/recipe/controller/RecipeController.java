@@ -43,24 +43,51 @@ public class RecipeController {
     }
 
     //根据菜谱名称查询菜谱信息
-    @GetMapping("recipeDetailByRecipeName")
-    public Result recipeDetailByRecipeName(@RequestParam String recipeName) {
+    @GetMapping("showRecipeByRecipeName")
+    public Result showRecipeByRecipeName(@RequestParam String recipeName) {
         Result result = recipeService.recipeDetailByRecipeName(recipeName);
         return result;
     }
 
     //根据分类名称查询菜谱信息
-    @GetMapping("recipeDetailByCategoryName")
-    public Result recipeDetailByCategoryName(@RequestParam String CategoryName) {
+    @GetMapping("showRecipeByCategoryName")
+    public Result showRecipeByCategoryName(@RequestParam String CategoryName) {
         Result result = recipeService.recipeDetailByCategoryName(CategoryName);
         return result;
     }
 
     //根据食材名称查询菜谱信息
-    @GetMapping("recipeDetailByIngredientName")
-    public Result recipeDetailByIngredientName(@RequestParam String ingredientName) {
+    @GetMapping("showRecipeByIngredientName")
+    public Result showRecipeByIngredientName(@RequestParam String ingredientName) {
         Result result = recipeService.recipeDetailByIngredientName(ingredientName);
         return result;
     }
 
+    //根据菜谱id查询收藏数量
+    @GetMapping("favoritesByRecipeId")
+    public Result favoritesByRecipeId(@RequestParam int recipeId) {
+        Result result = recipeService.favoritesByRecipeId(recipeId);
+        return result;
+    }
+
+    //根据菜谱id查询喜欢数量
+    @GetMapping("likesByRecipeId")
+    public Result likesByRecipeId(@RequestParam int recipeId) {
+        Result result = recipeService.likesByRecipeId(recipeId);
+        return result;
+    }
+
+    //菜谱热门收藏推荐前十
+    @GetMapping("popularFavorites")
+    public Result popularFavorites() {
+        Result result = recipeService.popularFavorites();
+        return result;
+    }
+
+    // 热门点赞前十
+    @GetMapping("popularLikes")
+    public Result popularLikes() {
+        Result result = recipeService.popularLikes();
+        return result;
+    }
 }

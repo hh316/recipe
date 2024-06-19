@@ -9,6 +9,10 @@
         insert into recipe_favorites(recipe_id, user_id)
         VALUES (#{recipeId}, #{userId});
     </insert>
+    <insert id="insert">
+        insert into User(user_name, user_password, user_avatar)
+        VALUES (#{userName}, #{userPassword}, #{userAvatar});
+    </insert>
 
     <select id="findAllfans" resultType="com.hh.recipe.domain.vo.UserVo">
         SELECT u.user_id, u.user_avatar, u.user_name

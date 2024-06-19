@@ -1,6 +1,7 @@
 package com.hh.recipe.controller;
 
 import com.hh.recipe.domain.dto.LoginDto;
+import com.hh.recipe.domain.dto.UserDto;
 import com.hh.recipe.domain.po.User;
 import com.hh.recipe.service.UserService;
 import com.hh.recipe.utils.Result;
@@ -24,9 +25,9 @@ public class UserController {
 
     //注册功能
     //注册功能
-    @PostMapping("regist")
-    private Result register(@RequestBody User user) {
-        Result result = userService.register(user);
+    @PostMapping("register")
+    private Result register(@RequestBody UserDto userDto) {
+        Result result = userService.register(userDto);
         return result;
     }
 
