@@ -4,7 +4,7 @@ package com.hh.recipe.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hh.recipe.domain.dto.CreateRecipeDto;
 import com.hh.recipe.domain.po.*;
-import com.hh.recipe.domain.vo.FavoritesRecipeVo;
+import com.hh.recipe.domain.vo.FavoritesAndLikeRecipeVo;
 import com.hh.recipe.domain.vo.RecipeDetailVo;
 import com.hh.recipe.mapper.*;
 import com.hh.recipe.service.RecipeService;
@@ -101,17 +101,6 @@ public class RecipeServiceImpl extends ServiceImpl<RecipeMapper, Recipe> impleme
         return Result.ok(null);
     }
 
-    /**
-     * 查看收藏的菜谱
-     */
-    @Override
-    public Result readRecipe() {
-        Integer userId = jwtHelper.getUserId(TokenContextHolder.getToken());
-        ArrayList<FavoritesRecipeVo> favoritesRecipeVoArrayList = new ArrayList<>();
-        favoritesRecipeVoArrayList = recipeMapper.readRecipe(userId);
-        System.out.println("收藏的菜谱:" + favoritesRecipeVoArrayList);
-        return Result.ok(favoritesRecipeVoArrayList);
-    }
 
     /**
      * @param recipeId 根据菜谱id显示菜谱详细信息
@@ -120,6 +109,65 @@ public class RecipeServiceImpl extends ServiceImpl<RecipeMapper, Recipe> impleme
     public Result recipeDetail(int recipeId) {
         RecipeDetailVo recipeDetailVo = recipeMapper.recipeDetail(recipeId);
         return Result.ok(recipeDetailVo);
+    }
+
+    /**
+     * @param recipeName
+     * @return * @return 通过菜谱名称查菜谱
+     */
+    @Override
+    public Result recipeDetailByRecipeName(String recipeName) {
+        ArrayList<RecipeDetailVo> recipeDetailVoArrayList = new ArrayList<>();
+        recipeDetailVoArrayList = recipeMapper.recipeDetailByRecipeName(recipeName);
+        return Result.ok(recipeDetailVoArrayList);
+    }
+
+    /**
+     * @param ingredientName
+     * @return 通过食材名称查菜谱
+     */
+    @Override
+    public Result recipeDetailByIngredientName(String ingredientName) {
+        ArrayList<RecipeDetailVo> recipeDetailVoArrayList = new ArrayList<>();
+        recipeDetailVoArrayList = recipeMapper.recipeDetailByIngredientName(ingredientName);
+        return Result.ok(recipeDetailVoArrayList);
+    }
+
+    /**
+     * @param categoryName
+     * @return 通过分类名称查菜谱
+     */
+    @Override
+    public Result recipeDetailByCategoryName(String categoryName) {
+        ArrayList<RecipeDetailVo> recipeDetailVoArrayList = new ArrayList<>();
+        recipeDetailVoArrayList = recipeMapper.recipeDetailByCategoryName(categoryName);
+        return Result.ok(recipeDetailVoArrayList);
+    }
+
+    /**
+     * @return 通过用户id查询点赞菜谱
+     */
+    @Override
+    public Result recipeLikesByRecipeId() {
+        Integer userId = jwtHelper.getUserId(TokenContextHolder.getToken());
+        ArrayList<FavoritesAndLikeRecipeVo> favoritesRecipeVoArrayList = new ArrayList<>();
+        favoritesRecipeVoArrayList = recipeMapper.readrecipeLikesByRecipeIdRecipe(userId);
+        System.out.println("点赞的菜谱:" + favoritesRecipeVoArrayList);
+        return Result.ok(favoritesRecipeVoArrayList);
+    }
+
+
+    /**
+     * 查看收藏的菜谱
+     */
+
+    @Override
+    public Result recipeFavoritesByRecipeId() {
+        Integer userId = jwtHelper.getUserId(TokenContextHolder.getToken());
+        ArrayList<FavoritesAndLikeRecipeVo> favoritesRecipeVoArrayList = new ArrayList<>();
+        favoritesRecipeVoArrayList = recipeMapper.recipeFavoritesByRecipeId(userId);
+        System.out.println("收藏的菜谱:" + favoritesRecipeVoArrayList);
+        return Result.ok(favoritesRecipeVoArrayList);
     }
 
 

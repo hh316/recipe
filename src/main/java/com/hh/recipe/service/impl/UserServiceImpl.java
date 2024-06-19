@@ -6,15 +6,16 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hh.recipe.domain.dto.LoginDto;
 import com.hh.recipe.domain.po.User;
+import com.hh.recipe.domain.vo.UserVo;
 import com.hh.recipe.mapper.UserMapper;
 import com.hh.recipe.service.UserService;
-import com.hh.recipe.utils.JwtHelper;
-import com.hh.recipe.utils.MD5Util;
-import com.hh.recipe.utils.Result;
-import com.hh.recipe.utils.ResultCodeEnum;
+import com.hh.recipe.utils.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+
 //用户业务层
 @Service
 @RequiredArgsConstructor
@@ -67,21 +68,51 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
-     * @param token
+     * @param
      * @return
      */
     @Override
-    public Integer getUserInfo(String token) {
+    public Result getUserInfo() {
+        String token = TokenContextHolder.getToken();
         //判断token是否有效
         boolean expiration = jwtHelper.isExpiration(token);
         if (expiration) {
             //未登录
-            return 504;
+            return Result.build("null", ResultCodeEnum.NOTLOGIN);
         }
         //根据id获取数据
-        int userId = jwtHelper.getUserId(token).intValue();
+        Integer userId = jwtHelper.getUserId(token);
+        User user = userMapper.selectById(userId);
+        user.setUserPassword("");
+        HashMap data = new HashMap();
+        data.put("loginUser", user);
+        return Result.ok(data);
+    }
 
-        return userId;
+    /**
+     * @return 查找用户所有粉丝
+     */
+    @Override
+    public Result findAllfans() {
+        Integer userId = jwtHelper.getUserId(TokenContextHolder.getToken());
+        System.out.println(TokenContextHolder.getToken());
+        System.out.println(userId);
+        ArrayList<UserVo> userVoArrayList = new ArrayList<>();
+        userVoArrayList = userMapper.findAllfans(userId);
+        return Result.ok(userVoArrayList);
+    }
+
+    /**
+     * @return 查找用户所有关注者
+     */
+    @Override
+    public Result findAllFollower() {
+        Integer userId = jwtHelper.getUserId(TokenContextHolder.getToken());
+        System.out.println(TokenContextHolder.getToken());
+        System.out.println(userId);
+        ArrayList<UserVo> userVoArrayList = new ArrayList<>();
+        userVoArrayList = userMapper.findAllFollower(userId);
+        return Result.ok(userVoArrayList);
     }
 
     //通过请求头token获得user_id

@@ -3,7 +3,7 @@ package com.hh.recipe.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hh.recipe.domain.po.Recipe;
-import com.hh.recipe.domain.vo.FavoritesRecipeVo;
+import com.hh.recipe.domain.vo.FavoritesAndLikeRecipeVo;
 import com.hh.recipe.domain.vo.RecipeDetailVo;
 
 import java.util.ArrayList;
@@ -11,8 +11,17 @@ import java.util.ArrayList;
 
 public interface RecipeMapper extends BaseMapper<Recipe> {
 
-    //查询收藏菜谱
-    ArrayList<FavoritesRecipeVo> readRecipe(Integer userId);
 
     RecipeDetailVo recipeDetail(int recipeId);
+
+
+    ArrayList<RecipeDetailVo> recipeDetailByRecipeName(String recipeName);
+
+    ArrayList<RecipeDetailVo> recipeDetailByIngredientName(String ingredientName);
+
+    ArrayList<RecipeDetailVo> recipeDetailByCategoryName(String categoryName);
+
+    ArrayList<FavoritesAndLikeRecipeVo> readrecipeLikesByRecipeIdRecipe(Integer userId);
+
+    ArrayList<FavoritesAndLikeRecipeVo> recipeFavoritesByRecipeId(Integer userId);
 }

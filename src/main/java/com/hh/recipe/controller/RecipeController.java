@@ -23,8 +23,15 @@ public class RecipeController {
 
     // 查看收藏的菜谱
     @GetMapping()
-    public Result readRecipe() {
-        Result result = recipeService.readRecipe();
+    public Result recipeFavoritesByRecipeId() {
+        Result result = recipeService.recipeFavoritesByRecipeId();
+        return result;
+    }
+
+    //查看点赞的菜谱
+    @GetMapping("recipeLikesByRecipeId")
+    public Result recipeLikesByRecipeId() {
+        Result result = recipeService.recipeLikesByRecipeId();
         return result;
     }
 
@@ -34,4 +41,26 @@ public class RecipeController {
         Result result = recipeService.recipeDetail(recipeId);
         return result;
     }
+
+    //根据菜谱名称查询菜谱信息
+    @GetMapping("recipeDetailByRecipeName")
+    public Result recipeDetailByRecipeName(@RequestParam String recipeName) {
+        Result result = recipeService.recipeDetailByRecipeName(recipeName);
+        return result;
+    }
+
+    //根据分类名称查询菜谱信息
+    @GetMapping("recipeDetailByCategoryName")
+    public Result recipeDetailByCategoryName(@RequestParam String CategoryName) {
+        Result result = recipeService.recipeDetailByCategoryName(CategoryName);
+        return result;
+    }
+
+    //根据食材名称查询菜谱信息
+    @GetMapping("recipeDetailByIngredientName")
+    public Result recipeDetailByIngredientName(@RequestParam String ingredientName) {
+        Result result = recipeService.recipeDetailByIngredientName(ingredientName);
+        return result;
+    }
+
 }

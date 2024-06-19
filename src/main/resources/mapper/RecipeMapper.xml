@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hh.recipe.mapper.RecipeMapper">
 
-    <select id="readRecipe" resultType="com.hh.recipe.domain.vo.FavoritesRecipeVo">
+    <select id="recipeFavoritesByRecipeId" resultType="com.hh.recipe.domain.vo.FavoritesAndLikeRecipeVo">
         SELECT Recipe.recipe_name, recipe.recipe_image, Recipe.recipe_id
         FROM Recipe_Favorites
                  JOIN Recipe ON Recipe_Favorites.recipe_id = Recipe.recipe_id
@@ -16,5 +16,46 @@
                Recipe.recipe_experience
         FROM Recipe
         WHERE Recipe_id = #{recipe_id};
+    </select>
+    <select id="recipeDetailByRecipeName" resultType="com.hh.recipe.domain.vo.RecipeDetailVo">
+        SELECT Recipe.recipe_name,
+               Recipe.recipe_image,
+               Recipe.recipe_description,
+               Recipe.create_time,
+               Recipe.recipe_experience
+        FROM Recipe
+        WHERE Recipe.recipe_name LIKE CONCAT('%', #{recipeName}, '%');
+    </select>
+    <select id="recipeDetailByIngredientName" resultType="com.hh.recipe.domain.vo.RecipeDetailVo">
+        SELECT Recipe.recipe_name,
+               Recipe.recipe_image,
+               Recipe.recipe_description,
+               Recipe.create_time,
+               Recipe.recipe_experience
+        FROM Ingredients
+                 JOIN
+             Recipe
+             ON
+                 Ingredients.recipe_id = Recipe.recipe_id
+        WHERE Ingredients.ingredient_name like CONCAT('%', #{ingredientName}, '%');
+    </select>
+    <select id="recipeDetailByCategoryName" resultType="com.hh.recipe.domain.vo.RecipeDetailVo">
+        SELECT Recipe.recipe_name,
+               Recipe.recipe_image,
+               Recipe.recipe_description,
+               Recipe.create_time,
+               Recipe.recipe_experience
+        FROM Category
+                 JOIN
+             Recipe
+             ON
+                 Category.recipe_id = Recipe.recipe_id
+        WHERE Category.Category_name like CONCAT('%', #{categoryName}, '%');
+    </select>
+    <select id="readrecipeLikesByRecipeIdRecipe" resultType="com.hh.recipe.domain.vo.FavoritesAndLikeRecipeVo">
+        SELECT Recipe.recipe_name, recipe.recipe_image, Recipe.recipe_id
+        FROM Recipe_likes
+                 JOIN Recipe ON Recipe_likes.recipe_id = Recipe.recipe_id
+        WHERE Recipe_likes.user_id = #{userId};
     </select>
 </mapper>

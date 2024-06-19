@@ -8,12 +8,20 @@ import com.hh.recipe.utils.Result;
 
 
 public interface RecipeService extends IService<Recipe> {
+    //创建菜谱
     Result create(CreateRecipeDto recipeDto);
 
-    Result readRecipe();
 
     Result recipeDetail(int recipeId);
-    //创建菜谱
 
 
+    Result recipeDetailByRecipeName(String recipeName);
+
+    Result recipeDetailByIngredientName(String ingredientName);
+
+    Result recipeDetailByCategoryName(String categoryName);
+
+    Result recipeLikesByRecipeId();
+
+    Result recipeFavoritesByRecipeId();
 }

@@ -3,4 +3,17 @@
 <mapper namespace="com.hh.recipe.mapper.UserMapper">
 
 
+    <select id="findAllfans" resultType="com.hh.recipe.domain.vo.UserVo">
+        SELECT u.user_id, u.user_avatar, u.user_name
+        FROM User u
+                 JOIN User_Follows uf
+                      ON u.user_id = uf.follower_id
+        WHERE uf.followee_id = #{userId};
+    </select>
+    <select id="findAllFollower" resultType="com.hh.recipe.domain.vo.UserVo">
+        SELECT u.user_id, u.user_avatar, u.user_name AS followed_user_name
+        FROM User u
+                 JOIN User_Follows uf ON u.user_id = uf.followee_id
+        WHERE uf.follower_id = #{userId};
+    </select>
 </mapper>

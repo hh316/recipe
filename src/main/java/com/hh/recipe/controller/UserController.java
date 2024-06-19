@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 //ctrl+alt+L自动代码整理
 @RestController
-@RequestMapping("/User")
+@RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -32,8 +32,22 @@ public class UserController {
 
     //登录后根据请求头token获取用户信息
     @GetMapping("getUserInfo")
-    private Integer getUserInfo(@RequestHeader String token) {
-        Integer userId = userService.getUserInfo(token);
-        return userId;
+    private Result getUserInfo() {
+        Result result = userService.getUserInfo();
+        return result;
+    }
+
+    //根据用户id查出所有粉丝的头像和名称和id
+    @GetMapping("findAllfans")
+    private Result findAllfans() {
+        Result result = userService.findAllfans();
+        return result;
+    }
+
+    //根据用户id查出所有关注的头像和名称和id
+    @GetMapping("findAllFollower")
+    private Result findAllFollower() {
+        Result result = userService.findAllFollower();
+        return result;
     }
 }
